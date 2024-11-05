@@ -3,111 +3,98 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eschula <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: eschula <<marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 10:03:15 by eschula           #+#    #+#             */
-/*   Updated: 2024/11/04 14:31:43 by eschula          ###   ########.fr       */
+/*   Updated: 2024/11/05 19:47:28 by eschula          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdlib.h>
-#include <stddef.h> // Para size_t
+#include <stddef.h>
 
+size_t	ft_strlen(const char *s)
+{
+	size_t	len;
 
-void *ft_memset(void *ptr, int value, size_t num) {
-    unsigned char *p = ptr;
-    while (num--) {
-        *p++ = (unsigned char)value;
-    }
-    return ptr;
+	len = 0;
+	while (s[len] != '\0')
+	{
+		len++;
+	}
+	return (len);
 }
 
-// Função para retornar o tamanho de uma string
-size_t ft_strlen(const char *s) {
-    size_t len = 0;
-    while (s[len]) {
-        len++;
-    }
-    return len;
+char	*ft_strdup(const char *s1)
+{
+	char	*dup;
+	size_t	len;
+	size_t	i;
+
+	len = ft_strlen(s1);
+	dup = (char *)malloc(len + 1);
+	if (!dup)
+	{
+		return (NULL);
+	}
+	i = 0;
+	while (i < len)
+	{
+		dup[i] = s1[i];
+		i++;
+	}
+	dup[len] = '\0';
+	return (dup);
 }
 
-// Função para duplicar uma string
-char *ft_strdup(const char *s1) {
-    char *dup;
-    size_t len = ft_strlen(s1);
+void	*ft_calloc(size_t count, size_t size)
+{
+	unsigned char	*ptr;
+	size_t			total;
 
-    dup = (char *)malloc(len + 1);
-    if (!dup) {
-        return NULL;
-    }
-    for (size_t i = 0; i < len; i++) {
-        dup[i] = s1[i];
-    }
-    dup[len] = '\0';
-    return dup;
+	total = count * size;
+	ptr = malloc(total);
+	if (!ptr)
+		return (NULL);
+	while (total)
+		ptr[--total] = 0;
+	return ((void *)ptr);
 }
 
-// Função para alocar memória
-void *ft_calloc(size_t count, size_t size) {
-    void *ptr = malloc(count * size);
-    if (!ptr) {
-        return NULL; // Retorna NULL se malloc falhar
-    }
-    ft_memset(ptr, 0, count * size); // Usa ft_memset em vez de memset
-    return ptr;
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	size_t	len1;
+	size_t	len2;
+	char	*joined_str;
+
+	if (!s1 || !s2)
+		return (NULL);
+	len1 = ft_strlen(s1);
+	len2 = ft_strlen(s2);
+	joined_str = (char *)malloc(len1 + len2 + 1);
+	if (!joined_str)
+		return (NULL);
+	joined_str[len1 + len2] = '\0';
+	ft_memcpy(joined_str, s1, len1);
+	ft_memcpy(joined_str + len1, s2, len2);
+	return (joined_str);
 }
 
+void	*ft_memcpy(void *dest, const void *src, size_t n)
+{
+	unsigned char		*d;
+	const unsigned char	*s;
+	size_t				i;
 
-// Função para extrair uma substring
-char *ft_substr(char const *s, unsigned int start, size_t len) {
-    if (!s || start >= ft_strlen(s)) {
-        return ft_strdup("");
-    }
-    if (len > ft_strlen(s + start)) {
-        len = ft_strlen(s + start);
-    }
-    char *substr = (char *)malloc(len + 1);
-    if (!substr) {
-        return NULL;
-    }
-    for (size_t i = 0; i < len; i++) {
-        substr[i] = s[start + i];
-    }
-    substr[len] = '\0';
-    return substr;
-}
-
-// Função para concatenar duas strings
-char *ft_strjoin(char *s1, char *s2) {
-    if (!s1 && !s2) {
-        return NULL;
-    }
-    char *joined;
-    size_t len1 = ft_strlen(s1);
-    size_t len2 = ft_strlen(s2);
-    
-    joined = (char *)malloc(len1 + len2 + 1);
-    if (!joined) {
-        return NULL;
-    }
-    for (size_t i = 0; i < len1; i++) {
-        joined[i] = s1[i];
-    }
-    for (size_t j = 0; j < len2; j++) {
-        joined[len1 + j] = s2[j];
-    }
-    joined[len1 + len2] = '\0';
-    free(s1); // Libera a memória de s1 se foi alocada
-    return joined;
-}
-
-char *ft_strchr(const char *s, int c) {
-    while (*s) {
-        if (*s == (char)c) {
-            return (char *)s; // Retorna o ponteiro para o caractere encontrado
-        }
-        s++;
-    }
-    return NULL; // Retorna NULL se o caractere não for encontrado
+	d = (unsigned char *)dest;
+	s = (const unsigned char *)src;
+	if (d == s || n == 0)
+		return (dest);
+	i = 0;
+	while (i < n)
+	{
+		d[i] = s[i];
+		i++;
+	}
+	return (dest);
 }

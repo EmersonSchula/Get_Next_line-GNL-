@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eschula <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: eschula <<marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 14:10:11 by eschula           #+#    #+#             */
-/*   Updated: 2024/11/04 20:00:05 by eschula          ###   ########.fr       */
+/*   Updated: 2024/11/05 19:35:01 by eschula          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,24 +15,22 @@
 #include <stdio.h>  // Para printf
 #include <unistd.h> // Para close
 
-int main(int argc, char *argv[]) {
-    if (argc < 2) {
-        printf("Uso: %s /home/emerson/Repositorios/get_next_line/caminho_do_arquivo.txt\n", argv[0]);
-        return 1;
-    }
+int	main(void)
+{
+	char	*line;
+	int		fd;
 
-    int fd = open(argv[1], O_RDONLY);
-    if (fd < 0) {
-        perror("Erro ao abrir o arquivo");
-        return 1;
-    }
-
-    char *line;
-    while ((line = get_next_line(fd)) != NULL) {
-        printf("%s\n", line);
-        free(line); // Libera a memória alocada para a linha
-    }
-
-    close(fd); // Fecha o arquivo
-    return 0;
+	fd = open("caminho_do_arquivo.txt", O_RDONLY);
+	if (fd < 0)
+	{
+		perror("Erro ao abrir o arquivo");
+		return (1);
+	}
+	while ((line = get_next_line(fd)) != NULL)
+	{
+		printf("%s\n", line);
+		free(line);
+	}
+	close(fd);
+	return (0);
 }

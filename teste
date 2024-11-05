@@ -1,0 +1,11 @@
+total 72
+-rwxr-xr-x 1 eschula candidate 20776 nov  5 19:09 a.out
+-rw-r--r-- 1 eschula candidate   609 nov  5 10:52 caminho_do_arquivo.txt
+-rw-r--r-- 1 eschula candidate  2118 nov  5 16:23 get_next_line_bcp.c
+-rw-r--r-- 1 eschula candidate  2264 nov  5 18:31 get_next_line.c
+-rw-r--r-- 1 eschula candidate  1294 nov  5 16:38 get_next_line.h
+-rw-r--r-- 1 eschula candidate  2198 nov  5 18:29 get_next_line_utils.c
+-rw-r--r-- 1 eschula candidate  1074 nov  5 10:52 LICENSE
+-rw-r--r-- 1 eschula candidate  1296 nov  5 19:09 main.c
+-rwxr-xr-x 1 eschula candidate 17256 nov  5 16:38 my_program
+-rw-r--r-- 1 eschula candidate     0 nov  5 19:12 teste
