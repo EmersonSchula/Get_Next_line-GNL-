@@ -6,7 +6,7 @@
 /*   By: eschula <<marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 10:03:15 by eschula           #+#    #+#             */
-/*   Updated: 2024/11/05 19:47:28 by eschula          ###   ########.fr       */
+/*   Updated: 2024/11/06 16:50:31 by eschula          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,10 @@ void	*ft_calloc(size_t count, size_t size)
 	total = count * size;
 	ptr = malloc(total);
 	if (!ptr)
+	{
+		free(ptr);	
 		return (NULL);
+	}
 	while (total)
 		ptr[--total] = 0;
 	return ((void *)ptr);
@@ -71,9 +74,12 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		return (NULL);
 	len1 = ft_strlen(s1);
 	len2 = ft_strlen(s2);
-	joined_str = (char *)malloc(len1 + len2 + 1);
+	joined_str = ft_calloc(len1 + len2 + 1, 1);
 	if (!joined_str)
+	{
+		free(joined_str);
 		return (NULL);
+	}
 	joined_str[len1 + len2] = '\0';
 	ft_memcpy(joined_str, s1, len1);
 	ft_memcpy(joined_str + len1, s2, len2);

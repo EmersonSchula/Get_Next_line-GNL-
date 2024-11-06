@@ -6,7 +6,7 @@
 /*   By: eschula <<marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 10:02:45 by eschula           #+#    #+#             */
-/*   Updated: 2024/11/05 19:24:18 by eschula          ###   ########.fr       */
+/*   Updated: 2024/11/06 20:18:36 by eschula          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,7 @@ static char	*ft_strchr(const char *s, int c)
 	while (*s)
 	{
 		if (*s == (char)c)
-		{
 			return ((char *)s);
-		}
 		s++;
 	}
 	return (NULL);
@@ -28,7 +26,6 @@ static char	*ft_strchr(const char *s, int c)
 
 static char	*read_and_store(int fd, char *buffer)
 {
-	char	*temp_buffer;
 	char	temp[BUFFER_SIZE + 1];
 	ssize_t	bytes_read;
 
@@ -36,9 +33,7 @@ static char	*read_and_store(int fd, char *buffer)
 	while (bytes_read > 0)
 	{
 		temp[bytes_read] = '\0';
-		temp_buffer = ft_strjoin(buffer, temp);
-		free(buffer);
-		buffer = temp_buffer;
+		buffer = ft_strjoin(buffer, temp);
 		if (ft_strchr(buffer, '\n'))
 			break ;
 		bytes_read = read(fd, temp, BUFFER_SIZE);
@@ -58,9 +53,7 @@ static char	*extract_line(char *buffer)
 		line = ft_strdup(buffer);
 	}
 	else
-	{
 		line = ft_strdup(buffer);
-	}
 	return (line);
 }
 
@@ -85,12 +78,15 @@ char	*get_next_line(int fd)
 	static char	*buffer;
 	char		*line;
 
-	buffer = (char *)malloc(BUFFER_SIZE + 1);
+	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	buffer = read_and_store(fd, buffer);
-	if (!buffer || !*buffer)
+	if (!buffer)
+	{
+		free(buffer);
 		return (NULL);
+	}
 	line = extract_line(buffer);
 	buffer = update_buffer(buffer);
 	return (line);
