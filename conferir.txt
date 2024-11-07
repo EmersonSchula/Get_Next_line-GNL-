@@ -1,0 +1,14 @@
+Observações e Melhorias
+Variáveis Estáticas:
+
+A variável static char *buffer; em get_next_line está correta, mas certifique-se de que sua inicialização e manipulação estejam de acordo com o esperado para evitar problemas de memória.
+Função read_and_store:
+
+A linha buffer = (char *)malloc(1); não faz sentido neste contexto, pois buffer já deve ser uma string válida ou NULL ao entrar na função. Essa linha pode ser removida.
+Certifique-se de verificar se ft_strjoin alocou a memória corretamente antes de prosseguir.
+Função extract_line:
+
+Certifique-se de liberar a memória corretamente se ft_strdup falhar.
+Função update_buffer:
+
+Está correta, mas verifique se ft_strdup também trata falhas de alocação.
