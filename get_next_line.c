@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eschula <<marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eschula <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 10:02:45 by eschula           #+#    #+#             */
-/*   Updated: 2024/11/07 19:53:50 by eschula          ###   ########.fr       */
+/*   Updated: 2024/11/08 00:15:09 by eschula          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,74 +26,74 @@ static char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-static char	*read_and_store(int fd, char *buffe)
+static char	*read_and_store(int fd, char *buffer)
 {
 	char	temp[BUFFER_SIZE + 1];
-	ssize_t	bytes_read;
+	ssize_t	bytes;
 
-	bytes_read = read(fd, temp, BUFFER_SIZE);
-	if (buffe == NULL)
+	bytes = read(fd, temp, BUFFER_SIZE);
+	if (buffer == NULL)
 	{
-		buffe = ft_strdup("");
-		if (!buffe)
+		buffer = ft_strdup("");
+		if (!buffer)
 			return (NULL);
 	}
-	while (bytes_read > 0)
+	while (bytes > 0)
 	{
-		temp[bytes_read] = '\0';
-		buffe = ft_strjoin(buffe, temp);
-		if (!buffe)
+		temp[bytes] = '\0';
+		buffer = ft_strjoin(buffer, temp);
+		if (!buffer)
 		{
-			free(buffe);
+			free(buffer);
 			return (NULL);
 		}
-		if (ft_strchr(buffe, '\n'))
+		if (ft_strchr(buffer, '\n'))
 			break ;
-		bytes_read = read(fd, temp, BUFFER_SIZE);
+		bytes = read(fd, temp, BUFFER_SIZE);
 	}
-	return (buffe);
+	return (buffer);
 }
 
-static char	*extract_line(char *buff)
+static char	*extract_line(char *buffer)
 {
-	char	*newline_pos;
-	char	*lin;
+	static char	*newline;
+	char	*line;
 
-	newline_pos = ft_strchr(buff, '\n');
-	if (newline_pos)
+	newline = ft_strchr(buffer, '\n');
+	if (newline)
 	{
-		*newline_pos = '\0';
-		lin = ft_strdup(buff);
-		if (!lin)
+		*newline = '\0';
+		line = ft_strdup(buffer);
+		if (!line)
         	return (NULL);
 	}
 	else
 	{
-		lin = ft_strdup(buff);
-		if (!lin)
+		line = ft_strdup(buffer);
+		if (!line)
         	return (NULL);
 	}
-	return (lin);
+	return (line);
 }
 
-static char	*update_buffer(char *buf)
+static char	*update_buffer(char *buffer)
 {
-	char	*newline_pos;
+	char	*newline;
 	char	*new_buffer;
 
-	newline_pos = ft_strchr(buf, '\n');
-	if (newline_pos)
+	newline = ft_strchr(buffer, '\n');
+	if (newline)
 	{
-		new_buffer = ft_strdup(newline_pos + 1);
+		new_buffer = ft_strdup(newline + 1);
 		if (!new_buffer)
 		{
-			free(buf);
+			free(buffer);
 			return (NULL);
 		}
-		//free(buf);
+		//free(buffer);
 		return (new_buffer);
 	}
-	free(buf);
+	free(buffer);
 	return (NULL);
 }
 
