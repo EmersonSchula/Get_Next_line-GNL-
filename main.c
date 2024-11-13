@@ -6,7 +6,7 @@
 /*   By: eschula <<marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 14:10:11 by eschula           #+#    #+#             */
-/*   Updated: 2024/11/07 16:47:59 by eschula          ###   ########.fr       */
+/*   Updated: 2024/11/12 15:53:55 by eschula          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,9 @@ int	main(void)
 	}
 	while ((line = get_next_line(fd)) != NULL)
 	{
-		printf("%s\n", line);
+		printf("%s", line);
 		free(line);
+		line = NULL;
 	}
 	close(fd);
 	return (0);

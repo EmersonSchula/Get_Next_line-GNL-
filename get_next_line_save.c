@@ -1,34 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_src.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eschula <<marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 16:46:03 by eschula           #+#    #+#             */
-/*   Updated: 2024/11/12 19:11:11 by eschula          ###   ########.fr       */
+/*   Updated: 2024/11/12 13:07:12 by eschula          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <fcntl.h>
-
-// void	free_src(char **src)
-// {
-// 	size_t	i;
-
-// 	if(src)
-// 	{
-// 		i = 0;
-// 		while (src[i] != '\0')
-// 		{
-// 			free(src[i]);
-// 			i++;
-// 		}
-// 	free(src);
-// 	}
-// 	return ;
-// }
 
 char	*read_to_buffer(int fd, char *buffer)
 {
@@ -43,7 +26,6 @@ char	*read_to_buffer(int fd, char *buffer)
 			return (NULL);
 		temp[bytes_read] = '\0';
 		buffer = ft_strjoin(buffer, temp);
-		// free_src(temp);
 		if (!buffer || !*buffer)
 		{
 			free(buffer);
@@ -67,7 +49,7 @@ char	*extract_line(char **buffer)
 	newline_pos = ft_strchr(*buffer, '\n');
 	if (newline_pos)
 	{
-		// *newline_pos = '\0';
+		*newline_pos = '\0';
 		line = ft_strdup(*buffer);
 		temp_buffer = ft_strdup(newline_pos + 1);
 		if (!temp_buffer)
@@ -91,6 +73,8 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
+	if (!buffer)
+		buffer = ft_calloc(1, sizeof(char));
 	buffer = read_to_buffer(fd, buffer);
 	if (!buffer || !*buffer)
 	{

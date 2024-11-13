@@ -6,7 +6,7 @@
 /*   By: eschula <<marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 10:03:23 by eschula           #+#    #+#             */
-/*   Updated: 2024/11/11 16:54:19 by eschula          ###   ########.fr       */
+/*   Updated: 2024/11/12 19:08:58 by eschula          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,6 @@ char	*ft_strdup(const char *s1);
 void	*ft_calloc(size_t count, size_t size);
 void	*ft_memcpy(void *dest, const void *src, size_t n);
 char	*ft_strchr(const char *s, int c);
+void	free_src(char **src);
 
 #endif
