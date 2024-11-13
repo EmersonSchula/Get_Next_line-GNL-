@@ -35,3 +35,4 @@ get_next_line_utils.o: get_next_line.h
 .PHONY: all clean fclean re
 
 #gcc -Wall -Wextra -Werror -g3 get_next_line.c get_next_line_utils.c main.c -o get_next_line 
+#valgrind --leak-check=full --show-leak-kinds=all ./a.out
