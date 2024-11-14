@@ -6,7 +6,7 @@
 /*   By: eschula <<marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 10:03:15 by eschula           #+#    #+#             */
-/*   Updated: 2024/11/13 20:13:24 by eschula          ###   ########.fr       */
+/*   Updated: 2024/11/14 19:08:12 by eschula          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,19 +31,16 @@ char	*ft_strdup(const char *s1)
 	size_t	len;
 	size_t	i;
 
+	if (!s1)
+		s1 = "";
 	len = ft_strlen(s1);
 	dup = (char *)malloc(len + 1);
 	if (!dup)
 		return (NULL);
 	i = 0;
-	while (i < len && dup[i] != '\n')
+	while (i < len && s1[i] != '\0')
 	{
 		dup[i] = s1[i];
-		if (dup[i] == '\n')
-		{
-			i++;
-			break;
-		}
 		i++;
 	}
 	dup[i] = '\0';

@@ -6,133 +6,118 @@
 /*   By: eschula <<marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 16:46:03 by eschula           #+#    #+#             */
-/*   Updated: 2024/11/13 20:24:56 by eschula          ###   ########.fr       */
+/*   Updated: 2024/11/14 19:59:45 by eschula          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <fcntl.h>
 
-char	*leitura_paragrafo(int fd, char *leitura)
+char	*ler_paragrafo(int fd, char *temp)
 {
 	char	*buffer;
-	char	*temp;
 	ssize_t	quantos_bytes;
 	
 	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buffer)
 		return (NULL);
 	quantos_bytes = 1;
-	while (!ft_strchr(leitura, '\n') && quantos_bytes > 0)
+	while (!ft_strchr(temp, '\n') && quantos_bytes > 0)
 	{
 		quantos_bytes = read(fd, buffer, BUFFER_SIZE);
 		if (quantos_bytes == -1)
-		{
+		{//
 			return (NULL);
-		}
+		}//
 		else if (quantos_bytes == 0)
-		{
+		{//
 			break;
-		}
+		}//
 		buffer[quantos_bytes] = '\0';
-		temp = leitura;
-		leitura = ft_strjoin(temp, buffer);
-		free(temp);
-		temp = NULL;
-		if (!leitura || !*leitura)
+		temp = ft_strjoin(temp, buffer);
+		if (!temp || !*temp)
 			return (NULL);
 	}
 	free(buffer);
 	buffer = NULL;
-	return (leitura);
+	return (temp);
 }
 
-char	*limpa_linha(char *stored)
+char	*dividir_linha(char *temp, char *linha)
 {
 	int		i;
-	char	*line;
 
-	if (!stored || !stored[0])
+	if (!temp || !temp[0])
 		return (NULL);
 	i = 0;
-	while (stored[i] && stored[i] != '\n')
+	while (temp[i] && temp[i] != '\n')
 		i++;
-	line = malloc((i + 2) * sizeof(char));
-	if (!line)
+	// free(linha);
+	// linha = NULL;
+	linha = malloc((i + 2) * sizeof(char));
+	if (!linha)
 		return (NULL);
 	i = 0;
-	while(stored[i] && stored[i] != '\n')
+	while(temp[i] && temp[i] != '\n')
 	{
-		line[i] = stored[i];
+		linha[i] = temp[i];
 		i++;
 	}
-	if (stored[i] == '\n')
+	if (temp[i] == '\n')
 	{
-		line[i] = '\n';
+		linha[i] = '\n';
 		i++;
 	}
-	line[i] = '\0';
-	return (line);
+	linha[i] = '\0';
+	return (linha);
 }
 
-char	*proxima_linha(char *stored)
+char	*proxima_linha(char *linha)
 {
 	int		i;
 	int		j;
 	char	*nova_linha;
 
 	i = 0;
-	while (stored[i] && stored[i] != '\n')
+	while (linha[i] && linha[i] != '\n')
 		i++;
-	if (!stored[i])
+	if (!linha[i])
 	{
 		return (NULL);
 	}
-	nova_linha = malloc((ft_strlen(stored) - i + 1) * sizeof(char));
+	nova_linha = malloc((ft_strlen(linha) - i + 1) * sizeof(char));
 	if (!nova_linha)
 		return (NULL);
 	i++;
 	j = 0;
-	while (stored[i])
-		nova_linha[j++] = stored[i++];
+	while (linha[i])
+		nova_linha[j++] = linha[i++];
 	nova_linha[j] = '\0';
-	return (nova_linha);
+	free(linha);
+	linha = NULL;
+	linha = ft_strdup(nova_linha);
+	free(nova_linha);
+	nova_linha = NULL;
+	return (linha);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*paragrafo;
+	static char	*memoria;
 	char		*linha;
 	char		*temp;
 
-	if (!paragrafo)
-		paragrafo = malloc((BUFFER_SIZE + 1) * sizeof(char));
+	if (!memoria)
+		memoria = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	temp = paragrafo;
-	paragrafo = leitura_paragrafo(fd, temp);
-	if(!temp)
-	{
-		free(temp);
-		temp = NULL;
-	}
-	if (!paragrafo || !*paragrafo)
-	{
-		free(paragrafo);
-		paragrafo = NULL;
-		return (NULL);
-	}
-	linha = limpa_linha(paragrafo);
-	paragrafo = proxima_linha(paragrafo);
-	if(!temp)
-	{
-		free(temp);
-		temp = NULL;
-	}
-	if (!paragrafo || !*paragrafo)
-	{
-		free(paragrafo);
-		paragrafo = NULL;
-	}
+	temp = memoria;
+	temp = ler_paragrafo(fd, temp);
+	linha = ft_strdup(temp);
+	// free(memoria);
+	// memoria = NULL;
+	memoria = proxima_linha(linha);
+	linha = dividir_linha(temp, linha);
+	// free(temp);
 	return (linha);
 }
