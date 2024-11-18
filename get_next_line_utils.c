@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eschula <<marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eschula <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 10:03:15 by eschula           #+#    #+#             */
-/*   Updated: 2024/11/14 19:08:12 by eschula          ###   ########.fr       */
+/*   Updated: 2024/11/15 23:15:57 by eschula          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <stddef.h>
+#include <stdint.h>
 
 size_t	ft_strlen(const char *s)
 {
@@ -34,7 +35,7 @@ char	*ft_strdup(const char *s1)
 	if (!s1)
 		s1 = "";
 	len = ft_strlen(s1);
-	dup = (char *)malloc(len + 1);
+	dup = ft_calloc(len + 1, sizeof(char));
 	if (!dup)
 		return (NULL);
 	i = 0;
@@ -52,8 +53,13 @@ void	*ft_calloc(size_t count, size_t size)
 	unsigned char	*ptr;
 	size_t			total;
 
-	total = count * size;
-	ptr = malloc(total);
+	if (size != 0 && count > SIZE_MAX / size)
+		return (NULL);
+	if (count == 0 || size == 0)
+		total = 1;
+	else
+		total = count * size;
+	ptr = malloc(total * sizeof(char));
 	if (!ptr)
 	{
 		free(ptr);
@@ -77,9 +83,12 @@ char	*ft_strjoin(const char *s1, const char *s2)
 		s2 = "";
 	i = 0;
 	len = ft_strlen(s1) + ft_strlen(s2);
-	dest = (char *)ft_calloc(len + 1, sizeof(char));
+	dest = ft_calloc(len + 1, sizeof(char));
 	if (!dest)
-		return (0);
+	{
+		free(dest);
+		return (NULL);
+	}
 	while (s1[i] != '\0')
 	{
 		dest[i] = s1[i];
