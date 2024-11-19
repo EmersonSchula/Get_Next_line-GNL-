@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eschula <<marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eschula <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 14:10:11 by eschula           #+#    #+#             */
-/*   Updated: 2024/11/14 19:57:39 by eschula          ###   ########.fr       */
+/*   Updated: 2024/11/18 20:35:47 by eschula          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int	main(void)
 	while ((line = get_next_line(fd)) != NULL)
 	{
 		printf("%s", line);
+		free(line);
 	}
 	close(fd);
 	return (0);

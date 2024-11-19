@@ -6,7 +6,7 @@
 /*   By: eschula <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 10:03:15 by eschula           #+#    #+#             */
-/*   Updated: 2024/11/15 23:15:57 by eschula          ###   ########.fr       */
+/*   Updated: 2024/11/18 17:00:07 by eschula          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*ft_strdup(const char *s1)
 	size_t	i;
 
 	if (!s1)
-		s1 = "";
+		return (NULL);
 	len = ft_strlen(s1);
 	dup = ft_calloc(len + 1, sizeof(char));
 	if (!dup)
@@ -50,16 +50,17 @@ char	*ft_strdup(const char *s1)
 
 void	*ft_calloc(size_t count, size_t size)
 {
-	unsigned char	*ptr;
+	char			*ptr;
 	size_t			total;
 
+	ptr = "";
 	if (size != 0 && count > SIZE_MAX / size)
 		return (NULL);
 	if (count == 0 || size == 0)
 		total = 1;
 	else
 		total = count * size;
-	ptr = malloc(total * sizeof(char));
+	ptr = (char *)malloc(total * sizeof(char));
 	if (!ptr)
 	{
 		free(ptr);
