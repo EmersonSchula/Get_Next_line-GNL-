@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eschula <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: eschula <<marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 16:46:03 by eschula           #+#    #+#             */
-/*   Updated: 2024/11/19 00:49:53 by eschula          ###   ########.fr       */
+/*   Updated: 2024/11/19 16:22:40 by eschula          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,11 @@ void	limpa(char **lixo)
 char	*ler_paragrafo(int fd, char *temp)
 {
 	char	*buffer;
+	char	*temp2;
 	ssize_t	bytes;
 
+	if (!temp)
+		temp = ft_strdup("");	
 	buffer = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
 	if (!buffer)
 		return (NULL);
@@ -41,15 +44,17 @@ char	*ler_paragrafo(int fd, char *temp)
 			break;
 		}
 		buffer[bytes] = '\0';
-		temp = ft_strjoin(temp, buffer);
-		if (!temp || !*temp)
+		temp2 = ft_strjoin(temp, buffer);
+		if (!temp2 || !*temp2)
 			return (NULL);
+		limpa(&temp);
+		temp = temp2;
 	}
 	limpa(&buffer);
 	return (temp);
 }
 
-char	*dividir_linha(char *temp, char *linha)
+char	*dividir_linha(char *temp, char *memoria)
 {
 	int		i;
 	char	*buffer;
@@ -77,54 +82,58 @@ char	*dividir_linha(char *temp, char *linha)
 		i++;
 	}
 	buffer[i] = '\0';
-	linha = ft_strdup(buffer);
+	temp = ft_strdup(buffer);
 	limpa(&buffer);
-	return (linha);
-}
-
-char	*proxima_linha(char *temp)
-{
-	int		i;
-	int		j;
-	char	*nova_linha;
-
-	i = 0;
-	while (temp[i] && temp[i] != '\n')
-		i++;
-	nova_linha = ft_calloc((ft_strlen(temp) - i + 1), sizeof(char));
-	if (!nova_linha)
-		return (NULL);
-	i++;
-	j = 0;
-	while (temp[i])
-		nova_linha[j++] = temp[i++];
-	nova_linha[j] = '\0';
-	temp = ft_strdup(nova_linha);
-	limpa(&nova_linha);
+	temp[i] = '\0';
+	memoria = &temp[i + 1];
+	
 	return (temp);
 }
 
+// static char	*proxima_linha(char *temp)
+// {
+// 	int		i;
+// 	int		j;
+// 	char	*nova_linha;
+
+// 	i = 0;
+// 	while (temp[i] && temp[i] != '\n')
+// 		i++;
+// 	nova_linha = ft_calloc((ft_strlen(temp) - i + 1), sizeof(char));
+// 	if (!nova_linha)
+// 		return (NULL);
+// 	i++;
+// 	j = 0;
+// 	while (temp[i])
+// 		nova_linha[j++] = temp[i++];
+// 	nova_linha[j] = '\0';
+// 	temp = ft_strdup(nova_linha);
+// 	limpa(&nova_linha);
+// 	return (temp);
+// }
+
 char	*get_next_line(int fd)
 {
-	static char	*memoria = "";
+	static char	*memoria;
 	char		*linha;
 	char		*temp;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
+	if (!memoria)
+		memoria = ft_calloc(1, 1);
 	temp = memoria;
 	temp = ler_paragrafo(fd, temp);
 	if (!temp)
 		return (NULL);
-	linha = "";
-	linha = dividir_linha(temp, linha);
-	if (!linha)
+	linha = memoria;
+	linha = dividir_linha(temp, memoria);
+	if (!memoria)
 	{
-		limpa(&linha);
+		limpa(&memoria);
 		limpa(&temp);
 		return (NULL);
 	}
-	memoria = proxima_linha(temp);
 	limpa(&temp);
 	return (linha);
 }
