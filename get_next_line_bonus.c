@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eschula <<marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 16:46:03 by eschula           #+#    #+#             */
-/*   Updated: 2024/11/21 15:31:57 by eschula          ###   ########.fr       */
+/*   Updated: 2024/11/21 15:43:11 by eschula          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static char	*clean(char **trash)
 {
@@ -66,19 +66,19 @@ static char	*split_lines(char *line)
 
 char	*get_next_line(int fd)
 {
-	static char	*rest = NULL;
+	static char	*rest[MAX_FD];
 	char		*buffer;
 	char		*line;
 
-	if (fd == -1 || BUFFER_SIZE <= 0)
+	if (fd == -1 || fd >= MAX_FD || BUFFER_SIZE <= 0)
 		return (NULL);
 	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 	if (!buffer)
 		return (NULL);
-	line = get_line(fd, buffer, rest);
+	line = get_line(fd, buffer, rest[fd]);
 	clean(&buffer);
 	if (!line)
-		return (clean(&rest));
-	rest = split_lines(line);
+		return (clean(&rest[fd]));
+	rest[fd] = split_lines(line);
 	return (line);
 }
